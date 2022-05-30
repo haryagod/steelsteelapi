@@ -30,7 +30,7 @@ recordRoutes.route('/login').post(async function (_req, res) {
 
   dbConnect
     .collection('users')
-    .find({"username": req.body.username, "password": req.body.password })
+    .find({"username": _req.body.username, "password": _req.body.password })
     .limit(1)
     .toArray(function (err, result) {
       if (err) {
