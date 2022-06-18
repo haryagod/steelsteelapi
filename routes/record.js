@@ -1,5 +1,5 @@
 const express = require('express');
-
+var ObjectID = require('bson').ObjectID;
 // recordRoutes is an instance of the express router.
 // We use it to define our routes.
 // The router will be added as a middleware and will take control of requests starting with path /listings.
@@ -80,11 +80,11 @@ recordRoutes.route('/listing').post(function (req, res) {
 // This section will help you create a new record.
 recordRoutes.route('/listing').put(function (req, res) {
   const dbConnect = dbo.getDb();
-
+  var id  = new ObjectID(req.body._id);
   dbConnect
     .collection('listings')
     .updateOne(
-      { _id: ObjectId =>(req.params.id) },
+      { _id: id },
       { $set: {"title":req.body.title,
       "genre": req.body.genre,
       "numberInStock":req.body.numberInStock,
@@ -104,8 +104,9 @@ recordRoutes.route('/listing').put(function (req, res) {
 
 // This section will help you delete a record.
 recordRoutes.route('/listings/delete/:id').delete((req, res) => {
+  var id  = new ObjectID(req.params.id);
   const dbConnect = dbo.getDb();
-  const listingQuery = { _id: ObjectId =>(req.params.id) };
+  const listingQuery = { _id: id };
   dbConnect
     .collection('listings')
     .deleteOne(listingQuery, function (err, _result) {
